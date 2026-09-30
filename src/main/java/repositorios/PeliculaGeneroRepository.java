@@ -1,4 +1,4 @@
-package es.safareyes.cineluis.repositorios;
+package repositorios;
 
 import es.safareyes.cineluis.modelos.PeliculaGenero;
 import org.springframework.data.jpa.repository.JpaRepository;

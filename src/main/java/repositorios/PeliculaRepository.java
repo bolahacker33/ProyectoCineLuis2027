@@ -1,4 +1,9 @@
-package repositorios;
+package es.safareyes.cineluis.repositorios;
 
-public interface PeliculaRepository {
+import es.safareyes.cineluis.modelos.Pelicula;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PeliculaRepository extends JpaRepository<Pelicula, Integer> {
 }

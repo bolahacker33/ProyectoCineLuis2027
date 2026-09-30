@@ -1,4 +1,9 @@
-package repositorios;
+package es.safareyes.cineluis.repositorios;
 
-public interface SesionRepository {
+import es.safareyes.cineluis.modelos.Sesion;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface SesionRepository extends JpaRepository<Sesion, Integer> {
 }
