@@ -2,6 +2,8 @@ package es.safareyes.cineluis.modelos;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @Entity
@@ -45,4 +47,12 @@ public class Sesion {
     public void setPelicula(Pelicula pelicula) { this.pelicula = pelicula; }
     public Sala getSala() { return sala; }
     public void setSala(Sala sala) { this.sala = sala; }
+
+    // RN-07: 30 % de descuento si la sesión es en miércoles
+    public BigDecimal calcularPrecioUnitario() {
+        if (fechaHoraInicio != null && fechaHoraInicio.getDayOfWeek() == DayOfWeek.WEDNESDAY) {
+            return precioBase.multiply(new BigDecimal("0.70")).setScale(2, RoundingMode.HALF_UP);
+        }
+        return precioBase;
+    }
 }

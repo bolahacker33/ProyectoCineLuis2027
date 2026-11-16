@@ -13,16 +13,13 @@ import java.util.List;
 public interface SesionRepository extends JpaRepository<Sesion, Integer> {
 
     @Query("""
-        SELECT s
-        FROM Sesion s
-        JOIN FETCH s.pelicula
+        SELECT s FROM Sesion s
+        JOIN FETCH s.pelicula p
         JOIN FETCH s.sala
-        WHERE (:fecha IS NULL OR CAST(s.fechaHoraInicio AS LocalDate) = :fecha)
-        AND (:peliculaId IS NULL OR s.pelicula.id = :peliculaId)
+        WHERE (cast(:fecha as date) IS NULL OR cast(s.fechaHoraInicio as date) = cast(:fecha as date))
+          AND (cast(:peliculaId as integer) IS NULL OR p.id = :peliculaId)
         ORDER BY s.fechaHoraInicio
         """)
-    List<Sesion> buscarSesiones(
-            @Param("fecha") LocalDate fecha,
-            @Param("peliculaId") Integer peliculaId
-    );
+    List<Sesion> buscarSesiones(@Param("fecha") LocalDate fecha,
+                                @Param("peliculaId") Integer peliculaId);
 }

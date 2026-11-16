@@ -6,6 +6,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -13,15 +16,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests(autorizacion -> autorizacion
-                        .requestMatchers(
-                                HttpMethod.GET,
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/peliculas",
+                                "/api/v1/peliculas/{id:\\d+}",
                                 "/api/v1/sesiones",
-                                "/api/v1/sesiones/*"
+                                "/api/v1/sesiones/{id:\\d+}",
+                                "/api/v1/generos"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/salas").hasAnyRole("ADMIN", "TAQUILLA")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());

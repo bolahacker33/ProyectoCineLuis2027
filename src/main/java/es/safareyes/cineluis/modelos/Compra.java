@@ -13,8 +13,8 @@ public class Compra {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "cod_compra")
-    private Integer codCompra;
+    @Column(name = "cod_compra", length = 8, unique = true)
+    private String codCompra;
 
     @Column(name = "parking_usado")
     private Boolean parkingUsado;
@@ -44,8 +44,8 @@ public class Compra {
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public Integer getCodCompra() { return codCompra; }
-    public void setCodCompra(Integer codCompra) { this.codCompra = codCompra; }
+    public String getCodCompra() { return codCompra; }
+    public void setCodCompra(String codCompra) { this.codCompra = codCompra; }
     public Boolean getParkingUsado() { return parkingUsado; }
     public void setParkingUsado(Boolean parkingUsado) { this.parkingUsado = parkingUsado; }
     public LocalDateTime getFechaCompra() { return fechaCompra; }

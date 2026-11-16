@@ -10,6 +10,7 @@ public class SesionDTO {
     private Integer sala;
     private Integer capacidad;
     private BigDecimal precioBase;
+    private BigDecimal precioDia;
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
     private Integer asientosLibres;
@@ -17,49 +18,28 @@ public class SesionDTO {
     public SesionDTO() {
     }
 
-    public SesionDTO(Integer id, String pelicula, Integer sala,
-                     Integer capacidad, BigDecimal precioBase,
-                     LocalDateTime fechaHoraInicio,
-                     LocalDateTime fechaHoraFin, Integer asientosLibres) {
+    public SesionDTO(Integer id, String pelicula, Integer sala, Integer capacidad,
+                     BigDecimal precioBase, BigDecimal precioDia,
+                     LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin,
+                     Integer asientosLibres) {
         this.id = id;
         this.pelicula = pelicula;
         this.sala = sala;
         this.capacidad = capacidad;
         this.precioBase = precioBase;
+        this.precioDia = precioDia;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;
         this.asientosLibres = asientosLibres;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getPelicula() {
-        return pelicula;
-    }
-
-    public Integer getSala() {
-        return sala;
-    }
-
-    public Integer getCapacidad() {
-        return capacidad;
-    }
-
-    public BigDecimal getPrecioBase() {
-        return precioBase;
-    }
-
-    public LocalDateTime getFechaHoraInicio() {
-        return fechaHoraInicio;
-    }
-
-    public LocalDateTime getFechaHoraFin() {
-        return fechaHoraFin;
-    }
-
-    public Integer getAsientosLibres() {
-        return asientosLibres;
-    }
+    public Integer getId() { return id; }
+    public String getPelicula() { return pelicula; }
+    public Integer getSala() { return sala; }
+    public Integer getCapacidad() { return capacidad; }
+    public BigDecimal getPrecioBase() { return precioBase; }
+    public BigDecimal getPrecioDia() { return precioDia; }
+    public LocalDateTime getFechaHoraInicio() { return fechaHoraInicio; }
+    public LocalDateTime getFechaHoraFin() { return fechaHoraFin; }
+    public Integer getAsientosLibres() { return asientosLibres; }
 }
