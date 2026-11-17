@@ -23,7 +23,6 @@ public interface CompraRepository extends JpaRepository<Compra, Integer> {
         """)
     Long contarEntradasVendidas(@Param("sesionId") Integer sesionId);
 
-    // RN-10: ocupación solo con compras CONFIRMADA
     @Query("""
         SELECT COALESCE(SUM(c.numEntradas), 0)
         FROM Compra c
@@ -31,7 +30,6 @@ public interface CompraRepository extends JpaRepository<Compra, Integer> {
         """)
     Long contarEntradasConfirmadas(@Param("sesionId") Integer sesionId);
 
-    // RN-10: recaudación solo con compras CONFIRMADA
     @Query("""
         SELECT SUM(c.numEntradas)
         FROM Compra c

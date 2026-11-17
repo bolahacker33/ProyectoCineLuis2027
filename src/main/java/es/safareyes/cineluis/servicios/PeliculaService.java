@@ -8,8 +8,10 @@ import es.safareyes.cineluis.repositorios.PeliculaGeneroRepository;
 import es.safareyes.cineluis.repositorios.GeneroRepository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,6 +30,30 @@ public class PeliculaService {
         return repository.buscarTodas(pageable).map(this::convertirDTO);
     }
 
+    // ENDPOINT 1: listado paginado con filtros (RF02)
+    public Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, Boolean cartelera,
+                                                int pagina, int tamanio) {
+
+        Pageable pageable = PageRequest.of(
+                Math.max(pagina, 0),
+                Math.min(Math.max(tamanio, 1), 100),
+                Sort.by("titulo"));
+
+        String t = titulo == null ? "" : titulo.trim();
+        String g = genero == null ? "" : genero.trim();
+
+        return repository
+                .buscarConFiltros(t, g, cartelera != null, cartelera != null && cartelera, pageable)
+                .map(this::convertirDTO);
+    }
+
+    // ENDPOINT 2: detalle de una película con sus géneros
+    public PeliculaDTO consultarPorId(Integer id) {
+        Pelicula pelicula = repository.buscarPorId(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Película no encontrada"));
+        return convertirDTO(pelicula);
+    }
+
     private PeliculaDTO convertirDTO(Pelicula pelicula) {
 
         List<String> generos = peliculaGeneroRepository
@@ -36,6 +62,7 @@ public class PeliculaService {
                 .map(PeliculaGenero::getGeneroId)
                 .map(id -> generoRepository.findById(id)
                         .map(g -> g.getNombre()).orElse(""))
+                .sorted()
                 .toList();
 
         return new PeliculaDTO(

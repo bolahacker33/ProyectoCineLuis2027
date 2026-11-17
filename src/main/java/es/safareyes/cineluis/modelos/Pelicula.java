@@ -1,7 +1,9 @@
 package es.safareyes.cineluis.modelos;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "pelicula")
 public class Pelicula {
