@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GeneroRepository extends JpaRepository<Genero, Integer> {
@@ -19,4 +20,6 @@ public interface GeneroRepository extends JpaRepository<Genero, Integer> {
             "GROUP BY g.nombre " +
             "ORDER BY g.nombre")
     List<GeneroDTO> buscarGenerosConNumeroPeliculas();
+
+    Optional<Genero> findByNombreIgnoreCase(String nombre);
 }

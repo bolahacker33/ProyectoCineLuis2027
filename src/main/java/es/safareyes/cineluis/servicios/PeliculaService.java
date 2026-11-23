@@ -1,6 +1,8 @@
 package es.safareyes.cineluis.servicios;
 
 import es.safareyes.cineluis.dto.PeliculaDTO;
+import es.safareyes.cineluis.dto.PeliculaRequest;
+import es.safareyes.cineluis.modelos.Genero;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.PeliculaGenero;
 import es.safareyes.cineluis.repositorios.PeliculaRepository;
@@ -11,13 +13,19 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
 public class PeliculaService {
+
+    private static final List<String> CLASIFICACIONES =
+            List.of("TP", "MAYORES_7", "MAYORES_12", "MAYORES_16", "MAYORES_18");
 
     private PeliculaRepository repository;
     private PeliculaGeneroRepository peliculaGeneroRepository;
@@ -30,7 +38,6 @@ public class PeliculaService {
         return repository.buscarTodas(pageable).map(this::convertirDTO);
     }
 
-    // ENDPOINT 1: listado paginado con filtros (RF02)
     public Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, Boolean cartelera,
                                                 int pagina, int tamanio) {
 
@@ -47,11 +54,63 @@ public class PeliculaService {
                 .map(this::convertirDTO);
     }
 
-    // ENDPOINT 2: detalle de una película con sus géneros
     public PeliculaDTO consultarPorId(Integer id) {
         Pelicula pelicula = repository.buscarPorId(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Película no encontrada"));
         return convertirDTO(pelicula);
+    }
+
+    @Transactional
+    public PeliculaDTO crear(PeliculaRequest request) {
+        validar(request);
+        List<Genero> generos = buscarGeneros(request.getGeneros());
+
+        Pelicula pelicula = new Pelicula();
+        pelicula.setTitulo(request.getTitulo().trim());
+        pelicula.setAnio(request.getAnio());
+        pelicula.setDuracion(request.getDuracion());
+        pelicula.setClasificacion(request.getClasificacion());
+        pelicula.setSinopsis(request.getSinopsis());
+        Pelicula guardada = repository.save(pelicula);
+
+        for (Genero genero : generos) {
+            PeliculaGenero peliculaGenero = new PeliculaGenero();
+            peliculaGenero.setPeliculaId(guardada.getId());
+            peliculaGenero.setGeneroId(genero.getId());
+            peliculaGeneroRepository.save(peliculaGenero);
+        }
+
+        return convertirDTO(guardada);
+    }
+
+    private void validar(PeliculaRequest request) {
+        if (request.getTitulo() == null || request.getTitulo().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El título es obligatorio");
+        }
+        if (request.getAnio() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El año es obligatorio");
+        }
+        if (request.getDuracion() == null || request.getDuracion() < 1 || request.getDuracion() > 300) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La duración debe estar entre 1 y 300 minutos");
+        }
+        if (request.getClasificacion() == null || !CLASIFICACIONES.contains(request.getClasificacion())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Clasificación no válida. Valores: " + CLASIFICACIONES);
+        }
+    }
+
+    private List<Genero> buscarGeneros(List<String> nombres) {
+        if (nombres == null || nombres.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La película debe tener al menos un género");
+        }
+        Map<Integer, Genero> generos = new LinkedHashMap<>();
+        for (String nombre : nombres) {
+            Genero genero = generoRepository.findByNombreIgnoreCase(nombre == null ? "" : nombre.trim())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "El género no existe: " + nombre));
+            generos.put(genero.getId(), genero);
+        }
+        return List.copyOf(generos.values());
     }
 
     private PeliculaDTO convertirDTO(Pelicula pelicula) {
