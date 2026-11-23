@@ -18,7 +18,6 @@ public class GeneroController {
         this.generoRepository = generoRepository;
     }
 
-    // ENDPOINT 6: géneros con número de películas en cartelera
     @GetMapping
     public List<GeneroDTO> listarGeneros() {
         return generoRepository.buscarGenerosConNumeroPeliculas();

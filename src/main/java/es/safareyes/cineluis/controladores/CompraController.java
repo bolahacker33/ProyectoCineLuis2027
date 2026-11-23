@@ -21,7 +21,6 @@ public class CompraController {
         this.compraService = compraService;
     }
 
-    // ENDPOINT 13: listado paginado
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','TAQUILLA','CLIENTE')")
     public Page<CompraDTO> listar(@RequestParam(defaultValue = "0") int pagina,
@@ -30,7 +29,6 @@ public class CompraController {
         return compraService.listar(pagina, tamanio, auth.getName(), esCliente(auth));
     }
 
-    // ENDPOINT 12: detalle de compra
     @GetMapping("/{codigo}")
     @PreAuthorize("hasAnyRole('ADMIN','TAQUILLA','CLIENTE')")
     public CompraDTO detalle(@PathVariable String codigo, Authentication auth) {
