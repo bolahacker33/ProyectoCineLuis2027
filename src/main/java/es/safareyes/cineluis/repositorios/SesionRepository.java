@@ -27,6 +27,16 @@ public interface SesionRepository extends JpaRepository<Sesion, Integer> {
                              @Param("todasLasPeliculas") boolean todasLasPeliculas,
                              @Param("peliculaId") Integer peliculaId);
 
+    @Query("""
+        SELECT COUNT(s) FROM Sesion s
+        WHERE s.sala.id = :salaId
+        AND s.fechaHoraInicio < :fin
+        AND s.fechaHoraFin > :inicio
+        """)
+    Long contarSolapadas(@Param("salaId") Integer salaId,
+                         @Param("inicio") LocalDateTime inicio,
+                         @Param("fin") LocalDateTime fin);
+
     default List<Sesion> buscarSesiones(LocalDate fecha, Integer peliculaId) {
         LocalDateTime desde = fecha == null ? LocalDateTime.of(1900, 1, 1, 0, 0) : fecha.atStartOfDay();
         LocalDateTime hasta = fecha == null ? LocalDateTime.of(9999, 12, 31, 0, 0) : fecha.plusDays(1).atStartOfDay();

@@ -1,13 +1,18 @@
 package es.safareyes.cineluis.controladores;
 
 import es.safareyes.cineluis.dto.SesionDTO;
+import es.safareyes.cineluis.dto.SesionRequest;
 import es.safareyes.cineluis.modelos.Sesion;
 import es.safareyes.cineluis.repositorios.CompraRepository;
 import es.safareyes.cineluis.repositorios.SesionRepository;
+import es.safareyes.cineluis.servicios.SesionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +27,13 @@ public class SesionController {
 
     private final SesionRepository sesionRepository;
     private final CompraRepository compraRepository;
+    private final SesionService sesionService;
 
-    public SesionController(SesionRepository sesionRepository, CompraRepository compraRepository) {
+    public SesionController(SesionRepository sesionRepository, CompraRepository compraRepository,
+                            SesionService sesionService) {
         this.sesionRepository = sesionRepository;
         this.compraRepository = compraRepository;
+        this.sesionService = sesionService;
     }
 
     // ENDPOINT 9: listado de sesiones con filtros
@@ -47,6 +55,12 @@ public class SesionController {
         Sesion sesion = sesionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada"));
         return convertirDTO(sesion);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public SesionDTO crear(@RequestBody SesionRequest request) {
+        return convertirDTO(sesionService.crear(request));
     }
 
     private SesionDTO convertirDTO(Sesion sesion) {
