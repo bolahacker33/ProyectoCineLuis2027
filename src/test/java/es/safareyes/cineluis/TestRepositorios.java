@@ -51,7 +51,7 @@ public class TestRepositorios {
 
     @Test
     void testBuscarConFiltros() {
-        Page<Pelicula> peliculas = peliculaRepository.buscarConFiltros("", "", false, false, PageRequest.of(0, 10));
+        Page<Pelicula> peliculas = peliculaRepository.buscarConFiltros("", "", "", false, false, PageRequest.of(0, 10));
         for (Pelicula p : peliculas.getContent()) {
             System.out.println("[GET 1 filtros] ID: " + p.getId() + " | Titulo: " + p.getTitulo()
                     + " | Cartelera: " + p.isCartelera());

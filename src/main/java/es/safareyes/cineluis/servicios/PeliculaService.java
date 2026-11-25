@@ -43,7 +43,7 @@ public class PeliculaService implements IPeliculaService {
     }
 
     @Override
-    public Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, Boolean cartelera,
+    public Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, String clasificacion, Boolean cartelera,
                                                 int pagina, int tamanio) {
 
         Pageable pageable = PageRequest.of(
@@ -53,9 +53,10 @@ public class PeliculaService implements IPeliculaService {
 
         String t = titulo == null ? "" : titulo.trim();
         String g = genero == null ? "" : genero.trim();
+        String c = clasificacion == null ? "" : clasificacion.trim().toUpperCase();
 
         return repository
-                .buscarConFiltros(t, g, cartelera != null, cartelera != null && cartelera, pageable)
+                .buscarConFiltros(t, g, c, cartelera != null, cartelera != null && cartelera, pageable)
                 .map(peliculaMapper::convertirADTO);
     }
 

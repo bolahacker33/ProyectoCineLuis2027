@@ -28,10 +28,11 @@ public class PeliculaController {
     @GetMapping
     public Page<PeliculaDTO> listar(@RequestParam(required = false) String titulo,
                                     @RequestParam(required = false) String genero,
+                                    @RequestParam(required = false) String clasificacion,
                                     @RequestParam(required = false) Boolean cartelera,
                                     @RequestParam(defaultValue = "0") int pagina,
                                     @RequestParam(defaultValue = "10") int tamanio) {
-        return peliculaService.consultarPeliculas(titulo, genero, cartelera, pagina, tamanio);
+        return peliculaService.consultarPeliculas(titulo, genero, clasificacion, cartelera, pagina, tamanio);
     }
 
     @GetMapping("/{id}")

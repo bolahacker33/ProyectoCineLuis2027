@@ -27,6 +27,7 @@ public interface IPeliculaRepository extends JpaRepository<Pelicula, Integer> {
         SELECT p FROM Pelicula p
         WHERE LOWER(p.titulo) LIKE LOWER(CONCAT('%', :titulo, '%'))
         AND (:filtrarCartelera = false OR p.cartelera = :cartelera)
+        AND (:clasificacion = '' OR p.clasificacion = :clasificacion)
         AND (:genero = '' OR EXISTS (
             SELECT 1 FROM PeliculaGenero pg, Genero g
             WHERE pg.peliculaId = p.id AND g.id = pg.generoId
@@ -36,6 +37,7 @@ public interface IPeliculaRepository extends JpaRepository<Pelicula, Integer> {
         SELECT COUNT(p) FROM Pelicula p
         WHERE LOWER(p.titulo) LIKE LOWER(CONCAT('%', :titulo, '%'))
         AND (:filtrarCartelera = false OR p.cartelera = :cartelera)
+        AND (:clasificacion = '' OR p.clasificacion = :clasificacion)
         AND (:genero = '' OR EXISTS (
             SELECT 1 FROM PeliculaGenero pg, Genero g
             WHERE pg.peliculaId = p.id AND g.id = pg.generoId
@@ -43,6 +45,7 @@ public interface IPeliculaRepository extends JpaRepository<Pelicula, Integer> {
         """)
     Page<Pelicula> buscarConFiltros(@Param("titulo") String titulo,
                                     @Param("genero") String genero,
+                                    @Param("clasificacion") String clasificacion,
                                     @Param("filtrarCartelera") boolean filtrarCartelera,
                                     @Param("cartelera") boolean cartelera,
                                     Pageable pageable);

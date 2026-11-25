@@ -8,7 +8,7 @@ public interface IPeliculaService {
 
     Page<PeliculaDTO> consultarTodasPeliculas(int pagina, int tamanio);
 
-    Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, Boolean cartelera, int pagina, int tamanio);
+    Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, String clasificacion, Boolean cartelera, int pagina, int tamanio);
 
     PeliculaDTO consultarPorId(Integer id);
 
