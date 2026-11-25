@@ -1,5 +1,8 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.excepciones.ReglaNegocioException;
+import es.safareyes.cineluis.excepciones.ElementoDuplicado;
+import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.Sala;
@@ -36,21 +39,19 @@ public class SesionService {
         }
 
         Pelicula pelicula = peliculaRepository.findById(request.getPeliculaId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Película no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
         Sala sala = salaRepository.findById(request.getSalaId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sala no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Sala no encontrada"));
 
         if (!pelicula.isCartelera()) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "La película no está en cartelera");
+            throw new ReglaNegocioException("La película no está en cartelera");
         }
 
         LocalDateTime inicio = request.getFechaHoraInicio();
         LocalDateTime fin = inicio.plusMinutes(pelicula.getDuracion());
 
         if (sesionRepository.contarSolapadas(sala.getId(), inicio, fin) > 0) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "La sala ya tiene una sesión en ese horario");
+            throw new ElementoDuplicado("La sala ya tiene una sesión en ese horario");
         }
 
         Sesion sesion = new Sesion();

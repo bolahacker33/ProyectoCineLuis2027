@@ -1,5 +1,6 @@
 package es.safareyes.cineluis.controladores;
 
+import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.SesionDTO;
 import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Sesion;
@@ -51,7 +52,7 @@ public class SesionController {
     @GetMapping("/{id}")
     public SesionDTO obtenerSesionPorId(@PathVariable Integer id) {
         Sesion sesion = sesionRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
         return convertirDTO(sesion);
     }
 

@@ -1,5 +1,6 @@
 package es.safareyes.cineluis.controladores;
 
+import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.OcupacionDTO;
 import es.safareyes.cineluis.dtos.RecaudacionDTO;
 import es.safareyes.cineluis.modelos.Pelicula;
@@ -35,7 +36,7 @@ public class InformeController {
     @PreAuthorize("hasRole('ADMIN')")
     public RecaudacionDTO recaudacion(@PathVariable Integer id) {
         Pelicula pelicula = peliculaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Película no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
 
         Long entradas = compraRepository.sumarEntradasConfirmadasPorPelicula(id);
         BigDecimal total = compraRepository.sumarRecaudacionPorPelicula(id);

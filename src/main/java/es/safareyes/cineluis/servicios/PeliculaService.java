@@ -1,5 +1,6 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.PeliculaDTO;
 import es.safareyes.cineluis.dtos.PeliculaRequest;
 import es.safareyes.cineluis.modelos.Genero;
@@ -56,7 +57,7 @@ public class PeliculaService {
 
     public PeliculaDTO consultarPorId(Integer id) {
         Pelicula pelicula = repository.buscarPorId(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Película no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
         return convertirDTO(pelicula);
     }
 

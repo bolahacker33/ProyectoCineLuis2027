@@ -1,5 +1,8 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.excepciones.ReglaNegocioException;
+import es.safareyes.cineluis.excepciones.ElementoDuplicado;
+import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.CompraDTO;
 import es.safareyes.cineluis.dtos.CompraRequest;
 import es.safareyes.cineluis.modelos.Compra;
@@ -37,7 +40,7 @@ public class CompraService {
     @Transactional(readOnly = true)
     public CompraDTO obtenerPorCodigo(String codigo, String username, boolean soloPropias) {
         Compra compra = compraRepository.findByCodCompra(codigo.toUpperCase())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Compra no encontrada"));
 
         if (soloPropias && !compra.getUsuario().getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No puedes ver compras de otro usuario");
@@ -70,17 +73,16 @@ public class CompraService {
         }
 
         Sesion sesion = sesionRepository.buscarParaCompra(request.getSesionId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada"));
+                .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
 
         if (!sesion.getFechaHoraInicio().isAfter(LocalDateTime.now())) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "La sesión ya ha empezado");
+            throw new ReglaNegocioException("La sesión ya ha empezado");
         }
 
         long vendidas = compraRepository.contarEntradasVendidas(sesion.getId());
         long libres = sesion.getSala().getCapacidad() - vendidas;
         if (request.getNumEntradas() > libres) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "No hay suficientes asientos libres. Quedan " + Math.max(libres, 0));
+            throw new ElementoDuplicado("No hay suficientes asientos libres. Quedan " + Math.max(libres, 0));
         }
 
         Usuario usuario = usuarioRepository.findByUsername(username)
