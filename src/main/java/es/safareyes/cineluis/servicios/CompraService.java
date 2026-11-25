@@ -1,5 +1,6 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.conversores.CompraMapper;
 import es.safareyes.cineluis.excepciones.ReglaNegocioException;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.CompraDTO;
@@ -34,6 +35,7 @@ public class CompraService {
     private final ICompraRepository compraRepository;
     private final ISesionRepository sesionRepository;
     private final IUsuarioRepository usuarioRepository;
+    private final CompraMapper compraMapper;
 
     @Transactional(readOnly = true)
     public CompraDTO obtenerPorCodigo(String codigo, String username, boolean soloPropias) {
@@ -43,7 +45,7 @@ public class CompraService {
         if (soloPropias && !compra.getUsuario().getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No puedes ver compras de otro usuario");
         }
-        return convertirDTO(compra);
+        return compraMapper.convertirADTO(compra);
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +59,7 @@ public class CompraService {
                 ? compraRepository.findByUsuarioUsername(username, pageable)
                 : compraRepository.findAll(pageable);
 
-        return resultado.map(this::convertirDTO);
+        return resultado.map(compraMapper::convertirADTO);
     }
 
     @Transactional
@@ -96,7 +98,7 @@ public class CompraService {
         compra.setPrecioTotal(sesion.calcularPrecioUnitario()
                 .multiply(BigDecimal.valueOf(request.getNumEntradas())));
 
-        return convertirDTO(compraRepository.save(compra));
+        return compraMapper.convertirADTO(compraRepository.save(compra));
     }
 
     private String generarCodigo() {
@@ -109,22 +111,5 @@ public class CompraService {
             codigo = sb.toString();
         } while (compraRepository.findByCodCompra(codigo).isPresent());
         return codigo;
-    }
-
-    private CompraDTO convertirDTO(Compra c) {
-        Sesion s = c.getSesion();
-        return new CompraDTO(
-                c.getCodCompra(),
-                s.getId(),
-                s.getPelicula().getTitulo(),
-                s.getSala().getNumero(),
-                s.getFechaHoraInicio(),
-                c.getNumEntradas(),
-                c.getPrecioTotal(),
-                c.getEstado(),
-                c.getParkingUsado(),
-                c.getFechaCompra(),
-                c.getUsuario().getUsername()
-        );
     }
 }
