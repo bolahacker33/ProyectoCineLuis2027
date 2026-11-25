@@ -2,7 +2,7 @@ package es.safareyes.cineluis.controladores;
 
 import es.safareyes.cineluis.dtos.PeliculaDTO;
 import es.safareyes.cineluis.dtos.PeliculaRequest;
-import es.safareyes.cineluis.servicios.PeliculaService;
+import es.safareyes.cineluis.servicios.IPeliculaService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/peliculas")
 public class PeliculaController {
 
-    private final PeliculaService peliculaService;
+    private final IPeliculaService peliculaService;
 
-    public PeliculaController(PeliculaService peliculaService) {
+    public PeliculaController(IPeliculaService peliculaService) {
         this.peliculaService = peliculaService;
     }
 

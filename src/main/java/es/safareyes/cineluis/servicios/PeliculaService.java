@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-public class PeliculaService {
+public class PeliculaService implements IPeliculaService {
 
     private static final List<String> CLASIFICACIONES =
             List.of("TP", "MAYORES_7", "MAYORES_12", "MAYORES_16", "MAYORES_18");
@@ -34,6 +34,7 @@ public class PeliculaService {
     private IGeneroRepository generoRepository;
     private PeliculaMapper peliculaMapper;
 
+    @Override
     public Page<PeliculaDTO> consultarTodasPeliculas(int pagina, int tamanio) {
 
         Pageable pageable = PageRequest.of(pagina, tamanio);
@@ -41,6 +42,7 @@ public class PeliculaService {
         return repository.buscarTodas(pageable).map(peliculaMapper::convertirADTO);
     }
 
+    @Override
     public Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, Boolean cartelera,
                                                 int pagina, int tamanio) {
 
@@ -57,6 +59,7 @@ public class PeliculaService {
                 .map(peliculaMapper::convertirADTO);
     }
 
+    @Override
     public PeliculaDTO consultarPorId(Integer id) {
         Pelicula pelicula = repository.buscarPorId(id)
                 .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
@@ -64,6 +67,7 @@ public class PeliculaService {
     }
 
     @Transactional
+    @Override
     public PeliculaDTO crear(PeliculaRequest request) {
         validar(request);
         List<Genero> generos = buscarGeneros(request.getGeneros());

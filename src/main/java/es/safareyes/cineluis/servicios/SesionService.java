@@ -21,13 +21,14 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
-public class SesionService {
+public class SesionService implements ISesionService {
 
     private ISesionRepository sesionRepository;
     private IPeliculaRepository peliculaRepository;
     private ISalaRepository salaRepository;
 
     @Transactional
+    @Override
     public Sesion crear(SesionRequest request) {
         if (request.getPeliculaId() == null || request.getSalaId() == null
                 || request.getFechaHoraInicio() == null || request.getPrecioBase() == null) {

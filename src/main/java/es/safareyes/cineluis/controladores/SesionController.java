@@ -7,7 +7,7 @@ import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Sesion;
 import es.safareyes.cineluis.conversores.SesionMapper;
 import es.safareyes.cineluis.repositorios.ISesionRepository;
-import es.safareyes.cineluis.servicios.SesionService;
+import es.safareyes.cineluis.servicios.ISesionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class SesionController {
 
     private final ISesionRepository sesionRepository;
     private final SesionMapper sesionMapper;
-    private final SesionService sesionService;
+    private final ISesionService sesionService;
 
     @GetMapping
     public List<SesionDTO> obtenerSesiones(

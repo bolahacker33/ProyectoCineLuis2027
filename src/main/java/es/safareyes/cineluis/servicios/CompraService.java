@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
-public class CompraService {
+public class CompraService implements ICompraService {
 
     private static final String ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final SecureRandom ALEATORIO = new SecureRandom();
@@ -38,6 +38,7 @@ public class CompraService {
     private final CompraMapper compraMapper;
 
     @Transactional(readOnly = true)
+    @Override
     public CompraDTO obtenerPorCodigo(String codigo, String username, boolean soloPropias) {
         Compra compra = compraRepository.findByCodCompra(codigo.toUpperCase())
                 .orElseThrow(() -> new ElementoNoEncontrado("Compra no encontrada"));
@@ -49,6 +50,7 @@ public class CompraService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public Page<CompraDTO> listar(int pagina, int tamanio, String username, boolean soloPropias) {
         Pageable pageable = PageRequest.of(
                 Math.max(pagina, 0),
@@ -63,6 +65,7 @@ public class CompraService {
     }
 
     @Transactional
+    @Override
     public CompraDTO crear(CompraRequest request, String username) {
         if (request.getSesionId() == null || request.getNumEntradas() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sesionId y numEntradas son obligatorios");

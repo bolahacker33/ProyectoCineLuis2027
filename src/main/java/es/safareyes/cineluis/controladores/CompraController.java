@@ -2,7 +2,7 @@ package es.safareyes.cineluis.controladores;
 
 import es.safareyes.cineluis.dtos.CompraDTO;
 import es.safareyes.cineluis.dtos.CompraRequest;
-import es.safareyes.cineluis.servicios.CompraService;
+import es.safareyes.cineluis.servicios.ICompraService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/compras")
 public class CompraController {
 
-    private final CompraService compraService;
+    private final ICompraService compraService;
 
-    public CompraController(CompraService compraService) {
+    public CompraController(ICompraService compraService) {
         this.compraService = compraService;
     }
 
