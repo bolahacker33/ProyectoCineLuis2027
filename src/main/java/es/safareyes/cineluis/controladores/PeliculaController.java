@@ -1,5 +1,9 @@
 package es.safareyes.cineluis.controladores;
 
+import es.safareyes.cineluis.dtos.CambiarCarteleraDTO;
+import es.safareyes.cineluis.dtos.EditarPeliculaDTO;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import jakarta.validation.Valid;
 import es.safareyes.cineluis.dtos.PeliculaDTO;
 import es.safareyes.cineluis.dtos.CrearPeliculaDTO;
@@ -44,5 +48,15 @@ public class PeliculaController {
     @ResponseStatus(HttpStatus.CREATED)
     public PeliculaDTO crear(@Valid @RequestBody CrearPeliculaDTO request) {
         return peliculaService.crear(request);
+    }
+
+    @PutMapping("/{id}")
+    public PeliculaDTO editar(@PathVariable Integer id, @Valid @RequestBody EditarPeliculaDTO request) {
+        return peliculaService.editar(id, request);
+    }
+
+    @PatchMapping("/{id}/cartelera")
+    public PeliculaDTO cambiarCartelera(@PathVariable Integer id, @Valid @RequestBody CambiarCarteleraDTO request) {
+        return peliculaService.cambiarCartelera(id, request);
     }
 }

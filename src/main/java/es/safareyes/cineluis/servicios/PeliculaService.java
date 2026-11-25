@@ -1,5 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.dtos.CambiarCarteleraDTO;
+import es.safareyes.cineluis.dtos.EditarPeliculaDTO;
 import es.safareyes.cineluis.conversores.PeliculaMapper;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.PeliculaDTO;
@@ -99,5 +101,41 @@ public class PeliculaService implements IPeliculaService {
             generos.put(genero.getId(), genero);
         }
         return List.copyOf(generos.values());
+    }
+
+    @Transactional
+    @Override
+    public PeliculaDTO editar(Integer id, EditarPeliculaDTO request) {
+        Pelicula pelicula = repository.buscarPorId(id)
+                .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
+        List<Genero> generos = buscarGeneros(request.generos());
+
+        pelicula.setTitulo(request.titulo().trim());
+        pelicula.setAnio(request.anio());
+        pelicula.setDuracion(request.duracion());
+        pelicula.setClasificacion(request.clasificacion());
+        pelicula.setSinopsis(request.sinopsis());
+        Pelicula guardada = repository.save(pelicula);
+
+        peliculaGeneroRepository.deleteAll(peliculaGeneroRepository.findByPeliculaId(id));
+        peliculaGeneroRepository.flush();
+
+        for (Genero genero : generos) {
+            PeliculaGenero peliculaGenero = new PeliculaGenero();
+            peliculaGenero.setPeliculaId(guardada.getId());
+            peliculaGenero.setGeneroId(genero.getId());
+            peliculaGeneroRepository.save(peliculaGenero);
+        }
+
+        return peliculaMapper.convertirADTO(guardada);
+    }
+
+    @Transactional
+    @Override
+    public PeliculaDTO cambiarCartelera(Integer id, CambiarCarteleraDTO request) {
+        Pelicula pelicula = repository.buscarPorId(id)
+                .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
+        pelicula.setCartelera(request.cartelera());
+        return peliculaMapper.convertirADTO(repository.save(pelicula));
     }
 }

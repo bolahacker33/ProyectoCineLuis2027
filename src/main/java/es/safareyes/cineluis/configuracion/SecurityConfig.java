@@ -37,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/salas").hasAnyRole("ADMIN", "TAQUILLA")
                         .requestMatchers(HttpMethod.POST, "/api/v1/peliculas").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/v1/sesiones").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/peliculas/{id:\\d+}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/peliculas/{id:\\d+}/cartelera").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
