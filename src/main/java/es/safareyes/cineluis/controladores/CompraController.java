@@ -1,5 +1,6 @@
 package es.safareyes.cineluis.controladores;
 
+import org.springframework.web.bind.annotation.PatchMapping;
 import jakarta.validation.Valid;
 import es.safareyes.cineluis.dtos.CompraDTO;
 import es.safareyes.cineluis.dtos.CrearCompraDTO;
@@ -46,6 +47,12 @@ public class CompraController {
     @PreAuthorize("hasAnyRole('CLIENTE','TAQUILLA')")
     public CompraDTO crear(@Valid @RequestBody CrearCompraDTO request, Authentication auth) {
         return compraService.crear(request, auth.getName());
+    }
+
+    @PatchMapping("/{codigo}/cancelar")
+    @PreAuthorize("hasAnyRole('ADMIN','TAQUILLA','CLIENTE')")
+    public CompraDTO cancelar(@PathVariable String codigo, Authentication auth) {
+        return compraService.cancelar(codigo, auth.getName(), esCliente(auth));
     }
 
     private boolean esCliente(Authentication auth) {
