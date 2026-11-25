@@ -1,10 +1,11 @@
 package es.safareyes.cineluis.controladores;
 
+import lombok.AllArgsConstructor;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.SesionDTO;
 import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Sesion;
-import es.safareyes.cineluis.repositorios.ICompraRepository;
+import es.safareyes.cineluis.conversores.SesionMapper;
 import es.safareyes.cineluis.repositorios.ISesionRepository;
 import es.safareyes.cineluis.servicios.SesionService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,25 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/sesiones")
 public class SesionController {
 
     private final ISesionRepository sesionRepository;
-    private final ICompraRepository compraRepository;
+    private final SesionMapper sesionMapper;
     private final SesionService sesionService;
-
-    public SesionController(ISesionRepository sesionRepository, ICompraRepository compraRepository,
-                            SesionService sesionService) {
-        this.sesionRepository = sesionRepository;
-        this.compraRepository = compraRepository;
-        this.sesionService = sesionService;
-    }
 
     @GetMapping
     public List<SesionDTO> obtenerSesiones(
@@ -45,7 +39,7 @@ public class SesionController {
 
         return sesionRepository.buscarSesiones(fecha, peliculaId)
                 .stream()
-                .map(this::convertirDTO)
+                .map(sesionMapper::convertirADTO)
                 .toList();
     }
 
@@ -53,30 +47,12 @@ public class SesionController {
     public SesionDTO obtenerSesionPorId(@PathVariable Integer id) {
         Sesion sesion = sesionRepository.findById(id)
                 .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
-        return convertirDTO(sesion);
+        return sesionMapper.convertirADTO(sesion);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SesionDTO crear(@RequestBody SesionRequest request) {
-        return convertirDTO(sesionService.crear(request));
-    }
-
-    private SesionDTO convertirDTO(Sesion sesion) {
-        Integer capacidad = sesion.getSala().getCapacidad();
-        Long vendidas = compraRepository.contarEntradasVendidas(sesion.getId());
-        int libres = Math.max(0, capacidad - vendidas.intValue());
-
-        return new SesionDTO(
-                sesion.getId(),
-                sesion.getPelicula().getTitulo(),
-                sesion.getSala().getNumero(),
-                capacidad,
-                sesion.getPrecioBase(),
-                sesion.calcularPrecioUnitario(),
-                sesion.getFechaHoraInicio(),
-                sesion.getFechaHoraFin(),
-                libres
-        );
+        return sesionMapper.convertirADTO(sesionService.crear(request));
     }
 }

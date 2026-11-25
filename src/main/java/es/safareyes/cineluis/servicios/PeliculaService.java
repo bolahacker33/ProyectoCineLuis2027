@@ -1,5 +1,6 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.conversores.PeliculaMapper;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.PeliculaDTO;
 import es.safareyes.cineluis.dtos.PeliculaRequest;
@@ -31,12 +32,13 @@ public class PeliculaService {
     private IPeliculaRepository repository;
     private IPeliculaGeneroRepository peliculaGeneroRepository;
     private IGeneroRepository generoRepository;
+    private PeliculaMapper peliculaMapper;
 
     public Page<PeliculaDTO> consultarTodasPeliculas(int pagina, int tamanio) {
 
         Pageable pageable = PageRequest.of(pagina, tamanio);
 
-        return repository.buscarTodas(pageable).map(this::convertirDTO);
+        return repository.buscarTodas(pageable).map(peliculaMapper::convertirADTO);
     }
 
     public Page<PeliculaDTO> consultarPeliculas(String titulo, String genero, Boolean cartelera,
@@ -52,13 +54,13 @@ public class PeliculaService {
 
         return repository
                 .buscarConFiltros(t, g, cartelera != null, cartelera != null && cartelera, pageable)
-                .map(this::convertirDTO);
+                .map(peliculaMapper::convertirADTO);
     }
 
     public PeliculaDTO consultarPorId(Integer id) {
         Pelicula pelicula = repository.buscarPorId(id)
                 .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
-        return convertirDTO(pelicula);
+        return peliculaMapper.convertirADTO(pelicula);
     }
 
     @Transactional
@@ -81,7 +83,7 @@ public class PeliculaService {
             peliculaGeneroRepository.save(peliculaGenero);
         }
 
-        return convertirDTO(guardada);
+        return peliculaMapper.convertirADTO(guardada);
     }
 
     private void validar(PeliculaRequest request) {
@@ -112,28 +114,5 @@ public class PeliculaService {
             generos.put(genero.getId(), genero);
         }
         return List.copyOf(generos.values());
-    }
-
-    private PeliculaDTO convertirDTO(Pelicula pelicula) {
-
-        List<String> generos = peliculaGeneroRepository
-                .findByPeliculaId(pelicula.getId())
-                .stream()
-                .map(PeliculaGenero::getGeneroId)
-                .map(id -> generoRepository.findById(id)
-                        .map(g -> g.getNombre()).orElse(""))
-                .sorted()
-                .toList();
-
-        return new PeliculaDTO(
-                pelicula.getId(),
-                pelicula.getTitulo(),
-                pelicula.getAnio(),
-                pelicula.getDuracion(),
-                pelicula.getClasificacion(),
-                pelicula.getSinopsis(),
-                pelicula.isCartelera(),
-                generos
-        );
     }
 }
