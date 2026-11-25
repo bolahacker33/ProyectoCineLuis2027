@@ -7,7 +7,7 @@ import java.util.List;
 import es.safareyes.cineluis.excepciones.ReglaNegocioException;
 import es.safareyes.cineluis.excepciones.ElementoDuplicado;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
-import es.safareyes.cineluis.dtos.SesionRequest;
+import es.safareyes.cineluis.dtos.CrearSesionDTO;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.Sala;
 import es.safareyes.cineluis.modelos.Sesion;
@@ -32,26 +32,26 @@ public class SesionService implements ISesionService {
     private ISalaRepository salaRepository;
     private SesionMapper sesionMapper;
 
-    private Sesion guardar(SesionRequest request) {
-        if (request.getPeliculaId() == null || request.getSalaId() == null
-                || request.getFechaHoraInicio() == null || request.getPrecioBase() == null) {
+    private Sesion guardar(CrearSesionDTO request) {
+        if (request.peliculaId() == null || request.salaId() == null
+                || request.fechaHoraInicio() == null || request.precioBase() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "peliculaId, salaId, fechaHoraInicio y precioBase son obligatorios");
         }
-        if (request.getPrecioBase().compareTo(BigDecimal.ZERO) <= 0) {
+        if (request.precioBase().compareTo(BigDecimal.ZERO) <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio base debe ser mayor que 0");
         }
 
-        Pelicula pelicula = peliculaRepository.findById(request.getPeliculaId())
+        Pelicula pelicula = peliculaRepository.findById(request.peliculaId())
                 .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
-        Sala sala = salaRepository.findById(request.getSalaId())
+        Sala sala = salaRepository.findById(request.salaId())
                 .orElseThrow(() -> new ElementoNoEncontrado("Sala no encontrada"));
 
         if (!pelicula.isCartelera()) {
             throw new ReglaNegocioException("La película no está en cartelera");
         }
 
-        LocalDateTime inicio = request.getFechaHoraInicio();
+        LocalDateTime inicio = request.fechaHoraInicio();
         LocalDateTime fin = inicio.plusMinutes(pelicula.getDuracion());
 
         if (sesionRepository.contarSolapadas(sala.getId(), inicio, fin) > 0) {
@@ -63,7 +63,7 @@ public class SesionService implements ISesionService {
         sesion.setSala(sala);
         sesion.setFechaHoraInicio(inicio);
         sesion.setFechaHoraFin(fin);
-        sesion.setPrecioBase(request.getPrecioBase());
+        sesion.setPrecioBase(request.precioBase());
         return sesionRepository.save(sesion);
     }
 
@@ -86,7 +86,7 @@ public class SesionService implements ISesionService {
 
     @Override
     @Transactional
-    public SesionDTO crear(SesionRequest request) {
+    public SesionDTO crear(CrearSesionDTO request) {
         return sesionMapper.convertirADTO(guardar(request));
     }
 }

@@ -1,7 +1,8 @@
 package es.safareyes.cineluis.controladores;
 
+import jakarta.validation.Valid;
 import es.safareyes.cineluis.dtos.PeliculaDTO;
-import es.safareyes.cineluis.dtos.PeliculaRequest;
+import es.safareyes.cineluis.dtos.CrearPeliculaDTO;
 import es.safareyes.cineluis.servicios.IPeliculaService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class PeliculaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PeliculaDTO crear(@RequestBody PeliculaRequest request) {
+    public PeliculaDTO crear(@Valid @RequestBody CrearPeliculaDTO request) {
         return peliculaService.crear(request);
     }
 }

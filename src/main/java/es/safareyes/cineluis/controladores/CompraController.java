@@ -1,7 +1,8 @@
 package es.safareyes.cineluis.controladores;
 
+import jakarta.validation.Valid;
 import es.safareyes.cineluis.dtos.CompraDTO;
-import es.safareyes.cineluis.dtos.CompraRequest;
+import es.safareyes.cineluis.dtos.CrearCompraDTO;
 import es.safareyes.cineluis.servicios.ICompraService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class CompraController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('CLIENTE','TAQUILLA')")
-    public CompraDTO crear(@RequestBody CompraRequest request, Authentication auth) {
+    public CompraDTO crear(@Valid @RequestBody CrearCompraDTO request, Authentication auth) {
         return compraService.crear(request, auth.getName());
     }
 

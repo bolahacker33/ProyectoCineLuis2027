@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
 import es.safareyes.cineluis.dtos.CompraDTO;
-import es.safareyes.cineluis.dtos.CompraRequest;
+import es.safareyes.cineluis.dtos.CrearCompraDTO;
 import org.springframework.data.domain.Page;
 
 public interface ICompraService {
@@ -10,5 +10,5 @@ public interface ICompraService {
 
     Page<CompraDTO> listar(int pagina, int tamanio, String username, boolean soloPropias);
 
-    CompraDTO crear(CompraRequest request, String username);
+    CompraDTO crear(CrearCompraDTO request, String username);
 }

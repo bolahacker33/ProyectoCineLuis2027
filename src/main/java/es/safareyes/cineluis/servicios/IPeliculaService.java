@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
 import es.safareyes.cineluis.dtos.PeliculaDTO;
-import es.safareyes.cineluis.dtos.PeliculaRequest;
+import es.safareyes.cineluis.dtos.CrearPeliculaDTO;
 import org.springframework.data.domain.*;
 
 public interface IPeliculaService {
@@ -12,5 +12,5 @@ public interface IPeliculaService {
 
     PeliculaDTO consultarPorId(Integer id);
 
-    PeliculaDTO crear(PeliculaRequest request);
+    PeliculaDTO crear(CrearPeliculaDTO request);
 }

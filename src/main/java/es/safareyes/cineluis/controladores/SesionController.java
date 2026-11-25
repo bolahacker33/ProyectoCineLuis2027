@@ -1,7 +1,8 @@
 package es.safareyes.cineluis.controladores;
 
+import jakarta.validation.Valid;
 import es.safareyes.cineluis.dtos.SesionDTO;
-import es.safareyes.cineluis.dtos.SesionRequest;
+import es.safareyes.cineluis.dtos.CrearSesionDTO;
 import es.safareyes.cineluis.servicios.ISesionService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,7 +41,7 @@ public class SesionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SesionDTO crear(@RequestBody SesionRequest request) {
+    public SesionDTO crear(@Valid @RequestBody CrearSesionDTO request) {
         return sesionService.crear(request);
     }
 }

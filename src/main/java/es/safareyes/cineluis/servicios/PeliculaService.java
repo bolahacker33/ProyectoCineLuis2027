@@ -3,7 +3,7 @@ package es.safareyes.cineluis.servicios;
 import es.safareyes.cineluis.conversores.PeliculaMapper;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.PeliculaDTO;
-import es.safareyes.cineluis.dtos.PeliculaRequest;
+import es.safareyes.cineluis.dtos.CrearPeliculaDTO;
 import es.safareyes.cineluis.modelos.Genero;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.PeliculaGenero;
@@ -68,16 +68,16 @@ public class PeliculaService implements IPeliculaService {
 
     @Transactional
     @Override
-    public PeliculaDTO crear(PeliculaRequest request) {
+    public PeliculaDTO crear(CrearPeliculaDTO request) {
         validar(request);
-        List<Genero> generos = buscarGeneros(request.getGeneros());
+        List<Genero> generos = buscarGeneros(request.generos());
 
         Pelicula pelicula = new Pelicula();
-        pelicula.setTitulo(request.getTitulo().trim());
-        pelicula.setAnio(request.getAnio());
-        pelicula.setDuracion(request.getDuracion());
-        pelicula.setClasificacion(request.getClasificacion());
-        pelicula.setSinopsis(request.getSinopsis());
+        pelicula.setTitulo(request.titulo().trim());
+        pelicula.setAnio(request.anio());
+        pelicula.setDuracion(request.duracion());
+        pelicula.setClasificacion(request.clasificacion());
+        pelicula.setSinopsis(request.sinopsis());
         Pelicula guardada = repository.save(pelicula);
 
         for (Genero genero : generos) {
@@ -90,17 +90,17 @@ public class PeliculaService implements IPeliculaService {
         return peliculaMapper.convertirADTO(guardada);
     }
 
-    private void validar(PeliculaRequest request) {
-        if (request.getTitulo() == null || request.getTitulo().isBlank()) {
+    private void validar(CrearPeliculaDTO request) {
+        if (request.titulo() == null || request.titulo().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El título es obligatorio");
         }
-        if (request.getAnio() == null) {
+        if (request.anio() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El año es obligatorio");
         }
-        if (request.getDuracion() == null || request.getDuracion() < 1 || request.getDuracion() > 300) {
+        if (request.duracion() == null || request.duracion() < 1 || request.duracion() > 300) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La duración debe estar entre 1 y 300 minutos");
         }
-        if (request.getClasificacion() == null || !CLASIFICACIONES.contains(request.getClasificacion())) {
+        if (request.clasificacion() == null || !CLASIFICACIONES.contains(request.clasificacion())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Clasificación no válida. Valores: " + CLASIFICACIONES);
         }

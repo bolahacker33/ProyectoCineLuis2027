@@ -4,7 +4,7 @@ import es.safareyes.cineluis.conversores.CompraMapper;
 import es.safareyes.cineluis.excepciones.ReglaNegocioException;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.CompraDTO;
-import es.safareyes.cineluis.dtos.CompraRequest;
+import es.safareyes.cineluis.dtos.CrearCompraDTO;
 import es.safareyes.cineluis.modelos.Compra;
 import es.safareyes.cineluis.modelos.Sesion;
 import es.safareyes.cineluis.modelos.Usuario;
@@ -66,15 +66,15 @@ public class CompraService implements ICompraService {
 
     @Transactional
     @Override
-    public CompraDTO crear(CompraRequest request, String username) {
-        if (request.getSesionId() == null || request.getNumEntradas() == null) {
+    public CompraDTO crear(CrearCompraDTO request, String username) {
+        if (request.sesionId() == null || request.numEntradas() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sesionId y numEntradas son obligatorios");
         }
-        if (request.getNumEntradas() < 1 || request.getNumEntradas() > 10) {
+        if (request.numEntradas() < 1 || request.numEntradas() > 10) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Se pueden comprar entre 1 y 10 entradas");
         }
 
-        Sesion sesion = sesionRepository.buscarParaCompra(request.getSesionId())
+        Sesion sesion = sesionRepository.buscarParaCompra(request.sesionId())
                 .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
 
         if (!sesion.getFechaHoraInicio().isAfter(LocalDateTime.now())) {
@@ -83,7 +83,7 @@ public class CompraService implements ICompraService {
 
         long vendidas = compraRepository.contarEntradasVendidas(sesion.getId());
         long libres = sesion.getSala().getCapacidad() - vendidas;
-        if (request.getNumEntradas() > libres) {
+        if (request.numEntradas() > libres) {
             throw new ReglaNegocioException("No hay suficientes asientos libres. Quedan " + Math.max(libres, 0));
         }
 
@@ -94,12 +94,12 @@ public class CompraService implements ICompraService {
         compra.setCodCompra(generarCodigo());
         compra.setUsuario(usuario);
         compra.setSesion(sesion);
-        compra.setNumEntradas(request.getNumEntradas());
-        compra.setParkingUsado(Boolean.TRUE.equals(request.getParkingUsado()));
+        compra.setNumEntradas(request.numEntradas());
+        compra.setParkingUsado(Boolean.TRUE.equals(request.parkingUsado()));
         compra.setFechaCompra(LocalDateTime.now());
         compra.setEstado("CONFIRMADA");
         compra.setPrecioTotal(sesion.calcularPrecioUnitario()
-                .multiply(BigDecimal.valueOf(request.getNumEntradas())));
+                .multiply(BigDecimal.valueOf(request.numEntradas())));
 
         return compraMapper.convertirADTO(compraRepository.save(compra));
     }

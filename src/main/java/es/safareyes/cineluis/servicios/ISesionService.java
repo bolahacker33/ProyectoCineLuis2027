@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
 import es.safareyes.cineluis.dtos.SesionDTO;
-import es.safareyes.cineluis.dtos.SesionRequest;
+import es.safareyes.cineluis.dtos.CrearSesionDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,5 +12,5 @@ public interface ISesionService {
 
     SesionDTO obtenerSesionPorId(Integer id);
 
-    SesionDTO crear(SesionRequest request);
+    SesionDTO crear(CrearSesionDTO request);
 }
