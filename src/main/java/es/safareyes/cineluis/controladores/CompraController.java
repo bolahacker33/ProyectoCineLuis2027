@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.controladores;
 
-import es.safareyes.cineluis.dto.CompraDTO;
-import es.safareyes.cineluis.dto.CompraRequest;
+import es.safareyes.cineluis.dtos.CompraDTO;
+import es.safareyes.cineluis.dtos.CompraRequest;
 import es.safareyes.cineluis.servicios.CompraService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

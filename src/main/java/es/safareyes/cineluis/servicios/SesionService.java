@@ -1,6 +1,6 @@
 package es.safareyes.cineluis.servicios;
 
-import es.safareyes.cineluis.dto.SesionRequest;
+import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.Sala;
 import es.safareyes.cineluis.modelos.Sesion;

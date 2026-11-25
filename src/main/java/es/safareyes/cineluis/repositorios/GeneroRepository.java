@@ -1,6 +1,6 @@
 package es.safareyes.cineluis.repositorios;
 
-import es.safareyes.cineluis.dto.GeneroDTO;
+import es.safareyes.cineluis.dtos.GeneroDTO;
 import es.safareyes.cineluis.modelos.Genero;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface GeneroRepository extends JpaRepository<Genero, Integer> {
 
-    @Query("SELECT new es.safareyes.cineluis.dto.GeneroDTO(" +
+    @Query("SELECT new es.safareyes.cineluis.dtos.GeneroDTO(" +
             "g.nombre, COUNT(DISTINCT p.id)) " +
             "FROM Genero g " +
             "LEFT JOIN PeliculaGenero pg ON pg.generoId = g.id " +

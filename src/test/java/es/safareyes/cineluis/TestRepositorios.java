@@ -1,6 +1,6 @@
 package es.safareyes.cineluis;
 
-import es.safareyes.cineluis.dto.GeneroDTO;
+import es.safareyes.cineluis.dtos.GeneroDTO;
 import es.safareyes.cineluis.modelos.Compra;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.Sala;

@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
-import es.safareyes.cineluis.dto.CompraDTO;
-import es.safareyes.cineluis.dto.CompraRequest;
+import es.safareyes.cineluis.dtos.CompraDTO;
+import es.safareyes.cineluis.dtos.CompraRequest;
 import es.safareyes.cineluis.modelos.Compra;
 import es.safareyes.cineluis.modelos.Sesion;
 import es.safareyes.cineluis.modelos.Usuario;

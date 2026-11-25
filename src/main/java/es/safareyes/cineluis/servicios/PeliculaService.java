@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
-import es.safareyes.cineluis.dto.PeliculaDTO;
-import es.safareyes.cineluis.dto.PeliculaRequest;
+import es.safareyes.cineluis.dtos.PeliculaDTO;
+import es.safareyes.cineluis.dtos.PeliculaRequest;
 import es.safareyes.cineluis.modelos.Genero;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.PeliculaGenero;

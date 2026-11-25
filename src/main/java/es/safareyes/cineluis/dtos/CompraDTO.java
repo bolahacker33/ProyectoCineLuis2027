@@ -1,4 +1,4 @@
-package es.safareyes.cineluis.dto;
+package es.safareyes.cineluis.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

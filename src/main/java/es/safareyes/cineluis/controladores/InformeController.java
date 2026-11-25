@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.controladores;
 
-import es.safareyes.cineluis.dto.OcupacionDTO;
-import es.safareyes.cineluis.dto.RecaudacionDTO;
+import es.safareyes.cineluis.dtos.OcupacionDTO;
+import es.safareyes.cineluis.dtos.RecaudacionDTO;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.repositorios.CompraRepository;
 import es.safareyes.cineluis.repositorios.PeliculaRepository;

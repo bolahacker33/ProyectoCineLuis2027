@@ -1,6 +1,6 @@
 package es.safareyes.cineluis.controladores;
 
-import es.safareyes.cineluis.dto.GeneroDTO;
+import es.safareyes.cineluis.dtos.GeneroDTO;
 import es.safareyes.cineluis.repositorios.GeneroRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

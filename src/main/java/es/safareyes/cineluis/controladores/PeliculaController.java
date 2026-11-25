@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.controladores;
 
-import es.safareyes.cineluis.dto.PeliculaDTO;
-import es.safareyes.cineluis.dto.PeliculaRequest;
+import es.safareyes.cineluis.dtos.PeliculaDTO;
+import es.safareyes.cineluis.dtos.PeliculaRequest;
 import es.safareyes.cineluis.servicios.PeliculaService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

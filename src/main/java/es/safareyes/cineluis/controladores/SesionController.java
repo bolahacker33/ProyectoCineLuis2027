@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.controladores;
 
-import es.safareyes.cineluis.dto.SesionDTO;
-import es.safareyes.cineluis.dto.SesionRequest;
+import es.safareyes.cineluis.dtos.SesionDTO;
+import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Sesion;
 import es.safareyes.cineluis.repositorios.CompraRepository;
 import es.safareyes.cineluis.repositorios.SesionRepository;
