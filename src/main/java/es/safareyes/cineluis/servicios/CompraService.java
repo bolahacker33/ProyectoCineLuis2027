@@ -5,9 +5,9 @@ import es.safareyes.cineluis.dtos.CompraRequest;
 import es.safareyes.cineluis.modelos.Compra;
 import es.safareyes.cineluis.modelos.Sesion;
 import es.safareyes.cineluis.modelos.Usuario;
-import es.safareyes.cineluis.repositorios.CompraRepository;
-import es.safareyes.cineluis.repositorios.SesionRepository;
-import es.safareyes.cineluis.repositorios.UsuarioRepository;
+import es.safareyes.cineluis.repositorios.ICompraRepository;
+import es.safareyes.cineluis.repositorios.ISesionRepository;
+import es.safareyes.cineluis.repositorios.IUsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +29,9 @@ public class CompraService {
     private static final String ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final SecureRandom ALEATORIO = new SecureRandom();
 
-    private final CompraRepository compraRepository;
-    private final SesionRepository sesionRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final ICompraRepository compraRepository;
+    private final ISesionRepository sesionRepository;
+    private final IUsuarioRepository usuarioRepository;
 
     // ENDPOINT 12: detalle por código (un cliente solo puede ver las suyas)
     @Transactional(readOnly = true)

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface GeneroRepository extends JpaRepository<Genero, Integer> {
+public interface IGeneroRepository extends JpaRepository<Genero, Integer> {
 
     @Query("SELECT new es.safareyes.cineluis.dtos.GeneroDTO(" +
             "g.nombre, COUNT(DISTINCT p.id)) " +

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Repository
-public interface CompraRepository extends JpaRepository<Compra, Integer> {
+public interface ICompraRepository extends JpaRepository<Compra, Integer> {
 
     @Query("""
         SELECT COALESCE(SUM(c.numEntradas), 0)

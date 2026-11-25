@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SesionRepository extends JpaRepository<Sesion, Integer> {
+public interface ISesionRepository extends JpaRepository<Sesion, Integer> {
 
     @Query("""
         SELECT s FROM Sesion s

@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.controladores;
 
 import es.safareyes.cineluis.modelos.Sala;
-import es.safareyes.cineluis.repositorios.SalaRepository;
+import es.safareyes.cineluis.repositorios.ISalaRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,9 @@ import java.util.List;
 @RequestMapping("/api/v1/salas")
 public class SalaController {
 
-    private final SalaRepository salaRepository;
+    private final ISalaRepository salaRepository;
 
-    public SalaController(SalaRepository salaRepository) {
+    public SalaController(ISalaRepository salaRepository) {
         this.salaRepository = salaRepository;
     }
 

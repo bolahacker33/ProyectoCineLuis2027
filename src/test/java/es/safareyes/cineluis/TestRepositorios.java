@@ -5,11 +5,11 @@ import es.safareyes.cineluis.modelos.Compra;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.Sala;
 import es.safareyes.cineluis.modelos.Sesion;
-import es.safareyes.cineluis.repositorios.CompraRepository;
-import es.safareyes.cineluis.repositorios.GeneroRepository;
-import es.safareyes.cineluis.repositorios.PeliculaRepository;
-import es.safareyes.cineluis.repositorios.SalaRepository;
-import es.safareyes.cineluis.repositorios.SesionRepository;
+import es.safareyes.cineluis.repositorios.ICompraRepository;
+import es.safareyes.cineluis.repositorios.IGeneroRepository;
+import es.safareyes.cineluis.repositorios.IPeliculaRepository;
+import es.safareyes.cineluis.repositorios.ISalaRepository;
+import es.safareyes.cineluis.repositorios.ISesionRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +26,19 @@ import java.util.Optional;
 public class TestRepositorios {
 
     @Autowired
-    private PeliculaRepository peliculaRepository;
+    private IPeliculaRepository peliculaRepository;
 
     @Autowired
-    private GeneroRepository generoRepository;
+    private IGeneroRepository generoRepository;
 
     @Autowired
-    private SalaRepository salaRepository;
+    private ISalaRepository salaRepository;
 
     @Autowired
-    private SesionRepository sesionRepository;
+    private ISesionRepository sesionRepository;
 
     @Autowired
-    private CompraRepository compraRepository;
+    private ICompraRepository compraRepository;
 
 
     void testPeliculaRepository() {

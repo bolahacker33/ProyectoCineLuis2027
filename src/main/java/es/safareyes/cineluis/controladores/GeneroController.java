@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.controladores;
 
 import es.safareyes.cineluis.dtos.GeneroDTO;
-import es.safareyes.cineluis.repositorios.GeneroRepository;
+import es.safareyes.cineluis.repositorios.IGeneroRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,9 +12,9 @@ import java.util.List;
 @RequestMapping("/api/v1/generos")
 public class GeneroController {
 
-    private final GeneroRepository generoRepository;
+    private final IGeneroRepository generoRepository;
 
-    public GeneroController(GeneroRepository generoRepository) {
+    public GeneroController(IGeneroRepository generoRepository) {
         this.generoRepository = generoRepository;
     }
 

@@ -3,8 +3,8 @@ package es.safareyes.cineluis.controladores;
 import es.safareyes.cineluis.dtos.SesionDTO;
 import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Sesion;
-import es.safareyes.cineluis.repositorios.CompraRepository;
-import es.safareyes.cineluis.repositorios.SesionRepository;
+import es.safareyes.cineluis.repositorios.ICompraRepository;
+import es.safareyes.cineluis.repositorios.ISesionRepository;
 import es.safareyes.cineluis.servicios.SesionService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -25,11 +25,11 @@ import java.util.List;
 @RequestMapping("/api/v1/sesiones")
 public class SesionController {
 
-    private final SesionRepository sesionRepository;
-    private final CompraRepository compraRepository;
+    private final ISesionRepository sesionRepository;
+    private final ICompraRepository compraRepository;
     private final SesionService sesionService;
 
-    public SesionController(SesionRepository sesionRepository, CompraRepository compraRepository,
+    public SesionController(ISesionRepository sesionRepository, ICompraRepository compraRepository,
                             SesionService sesionService) {
         this.sesionRepository = sesionRepository;
         this.compraRepository = compraRepository;

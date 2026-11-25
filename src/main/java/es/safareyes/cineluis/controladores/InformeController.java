@@ -3,9 +3,9 @@ package es.safareyes.cineluis.controladores;
 import es.safareyes.cineluis.dtos.OcupacionDTO;
 import es.safareyes.cineluis.dtos.RecaudacionDTO;
 import es.safareyes.cineluis.modelos.Pelicula;
-import es.safareyes.cineluis.repositorios.CompraRepository;
-import es.safareyes.cineluis.repositorios.PeliculaRepository;
-import es.safareyes.cineluis.repositorios.SesionRepository;
+import es.safareyes.cineluis.repositorios.ICompraRepository;
+import es.safareyes.cineluis.repositorios.IPeliculaRepository;
+import es.safareyes.cineluis.repositorios.ISesionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -27,9 +27,9 @@ import java.util.List;
 @AllArgsConstructor
 public class InformeController {
 
-    private final PeliculaRepository peliculaRepository;
-    private final SesionRepository sesionRepository;
-    private final CompraRepository compraRepository;
+    private final IPeliculaRepository peliculaRepository;
+    private final ISesionRepository sesionRepository;
+    private final ICompraRepository compraRepository;
 
     @GetMapping("/peliculas/{id}/recaudacion")
     @PreAuthorize("hasRole('ADMIN')")

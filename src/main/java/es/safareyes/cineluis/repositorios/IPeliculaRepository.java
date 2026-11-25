@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PeliculaRepository extends JpaRepository<Pelicula, Integer> {
+public interface IPeliculaRepository extends JpaRepository<Pelicula, Integer> {
 
     @Query("SELECT p FROM Pelicula p")
     Page<Pelicula> buscarTodas(Pageable pageable);

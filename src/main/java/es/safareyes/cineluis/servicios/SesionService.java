@@ -4,9 +4,9 @@ import es.safareyes.cineluis.dtos.SesionRequest;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.Sala;
 import es.safareyes.cineluis.modelos.Sesion;
-import es.safareyes.cineluis.repositorios.PeliculaRepository;
-import es.safareyes.cineluis.repositorios.SalaRepository;
-import es.safareyes.cineluis.repositorios.SesionRepository;
+import es.safareyes.cineluis.repositorios.IPeliculaRepository;
+import es.safareyes.cineluis.repositorios.ISalaRepository;
+import es.safareyes.cineluis.repositorios.ISesionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SesionService {
 
-    private SesionRepository sesionRepository;
-    private PeliculaRepository peliculaRepository;
-    private SalaRepository salaRepository;
+    private ISesionRepository sesionRepository;
+    private IPeliculaRepository peliculaRepository;
+    private ISalaRepository salaRepository;
 
     @Transactional
     public Sesion crear(SesionRequest request) {

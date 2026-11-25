@@ -1,7 +1,7 @@
 package es.safareyes.cineluis.servicios;
 
 import es.safareyes.cineluis.modelos.Usuario;
-import es.safareyes.cineluis.repositorios.UsuarioRepository;
+import es.safareyes.cineluis.repositorios.IUsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UsuarioDetailsService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final IUsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

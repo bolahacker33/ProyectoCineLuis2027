@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PeliculaGeneroRepository extends JpaRepository<PeliculaGenero, PeliculaGenero.PeliculaGeneroId> {
+public interface IPeliculaGeneroRepository extends JpaRepository<PeliculaGenero, PeliculaGenero.PeliculaGeneroId> {
 
     List<PeliculaGenero> findByPeliculaId(Integer peliculaId);
 }

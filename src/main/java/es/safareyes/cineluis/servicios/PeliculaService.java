@@ -5,9 +5,9 @@ import es.safareyes.cineluis.dtos.PeliculaRequest;
 import es.safareyes.cineluis.modelos.Genero;
 import es.safareyes.cineluis.modelos.Pelicula;
 import es.safareyes.cineluis.modelos.PeliculaGenero;
-import es.safareyes.cineluis.repositorios.PeliculaRepository;
-import es.safareyes.cineluis.repositorios.PeliculaGeneroRepository;
-import es.safareyes.cineluis.repositorios.GeneroRepository;
+import es.safareyes.cineluis.repositorios.IPeliculaRepository;
+import es.safareyes.cineluis.repositorios.IPeliculaGeneroRepository;
+import es.safareyes.cineluis.repositorios.IGeneroRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,9 +27,9 @@ public class PeliculaService {
     private static final List<String> CLASIFICACIONES =
             List.of("TP", "MAYORES_7", "MAYORES_12", "MAYORES_16", "MAYORES_18");
 
-    private PeliculaRepository repository;
-    private PeliculaGeneroRepository peliculaGeneroRepository;
-    private GeneroRepository generoRepository;
+    private IPeliculaRepository repository;
+    private IPeliculaGeneroRepository peliculaGeneroRepository;
+    private IGeneroRepository generoRepository;
 
     public Page<PeliculaDTO> consultarTodasPeliculas(int pagina, int tamanio) {
 
