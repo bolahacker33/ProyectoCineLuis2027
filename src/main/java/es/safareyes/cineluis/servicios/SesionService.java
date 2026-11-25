@@ -1,5 +1,9 @@
 package es.safareyes.cineluis.servicios;
 
+import es.safareyes.cineluis.conversores.SesionMapper;
+import es.safareyes.cineluis.dtos.SesionDTO;
+import java.time.LocalDate;
+import java.util.List;
 import es.safareyes.cineluis.excepciones.ReglaNegocioException;
 import es.safareyes.cineluis.excepciones.ElementoDuplicado;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
@@ -26,10 +30,9 @@ public class SesionService implements ISesionService {
     private ISesionRepository sesionRepository;
     private IPeliculaRepository peliculaRepository;
     private ISalaRepository salaRepository;
+    private SesionMapper sesionMapper;
 
-    @Transactional
-    @Override
-    public Sesion crear(SesionRequest request) {
+    private Sesion guardar(SesionRequest request) {
         if (request.getPeliculaId() == null || request.getSalaId() == null
                 || request.getFechaHoraInicio() == null || request.getPrecioBase() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -62,5 +65,28 @@ public class SesionService implements ISesionService {
         sesion.setFechaHoraFin(fin);
         sesion.setPrecioBase(request.getPrecioBase());
         return sesionRepository.save(sesion);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SesionDTO> obtenerSesiones(LocalDate fecha, Integer peliculaId) {
+        return sesionRepository.buscarSesiones(fecha, peliculaId)
+                .stream()
+                .map(sesionMapper::convertirADTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SesionDTO obtenerSesionPorId(Integer id) {
+        Sesion sesion = sesionRepository.findById(id)
+                .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
+        return sesionMapper.convertirADTO(sesion);
+    }
+
+    @Override
+    @Transactional
+    public SesionDTO crear(SesionRequest request) {
+        return sesionMapper.convertirADTO(guardar(request));
     }
 }

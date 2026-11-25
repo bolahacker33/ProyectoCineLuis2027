@@ -1,13 +1,9 @@
 package es.safareyes.cineluis.controladores;
 
-import lombok.AllArgsConstructor;
-import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.SesionDTO;
 import es.safareyes.cineluis.dtos.SesionRequest;
-import es.safareyes.cineluis.modelos.Sesion;
-import es.safareyes.cineluis.conversores.SesionMapper;
-import es.safareyes.cineluis.repositorios.ISesionRepository;
 import es.safareyes.cineluis.servicios.ISesionService;
+import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +23,6 @@ import java.util.List;
 @RequestMapping("/api/v1/sesiones")
 public class SesionController {
 
-    private final ISesionRepository sesionRepository;
-    private final SesionMapper sesionMapper;
     private final ISesionService sesionService;
 
     @GetMapping
@@ -36,23 +30,17 @@ public class SesionController {
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
             @RequestParam(required = false) Integer peliculaId) {
-
-        return sesionRepository.buscarSesiones(fecha, peliculaId)
-                .stream()
-                .map(sesionMapper::convertirADTO)
-                .toList();
+        return sesionService.obtenerSesiones(fecha, peliculaId);
     }
 
     @GetMapping("/{id}")
     public SesionDTO obtenerSesionPorId(@PathVariable Integer id) {
-        Sesion sesion = sesionRepository.findById(id)
-                .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
-        return sesionMapper.convertirADTO(sesion);
+        return sesionService.obtenerSesionPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SesionDTO crear(@RequestBody SesionRequest request) {
-        return sesionMapper.convertirADTO(sesionService.crear(request));
+        return sesionService.crear(request);
     }
 }
