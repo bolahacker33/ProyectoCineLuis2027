@@ -11,4 +11,6 @@ public interface ICompraService {
     Page<CompraDTO> listar(int pagina, int tamanio, String username, boolean soloPropias);
 
     CompraDTO crear(CrearCompraDTO request, String username);
+
+    CompraDTO cancelar(String codigo, String username, boolean soloPropias);
 }

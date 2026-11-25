@@ -108,4 +108,27 @@ public class CompraService implements ICompraService {
         } while (compraRepository.findByCodCompra(codigo).isPresent());
         return codigo;
     }
+
+    @Transactional
+    @Override
+    public CompraDTO cancelar(String codigo, String username, boolean soloPropias) {
+        Compra compra = compraRepository.findByCodCompra(codigo.toUpperCase())
+                .orElseThrow(() -> new ElementoNoEncontrado("Compra no encontrada"));
+
+        if (soloPropias && !compra.getUsuario().getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No puedes cancelar compras de otro usuario");
+        }
+        if ("CANCELADA".equalsIgnoreCase(compra.getEstado())) {
+            throw new ReglaNegocioException("La compra ya está cancelada");
+        }
+        if (Boolean.TRUE.equals(compra.getParkingUsado())) {
+            throw new ReglaNegocioException("La compra ya se ha canjeado en el parking");
+        }
+        if (compra.getSesion().getFechaHoraInicio().minusHours(1).isBefore(LocalDateTime.now())) {
+            throw new ReglaNegocioException("Solo se puede cancelar hasta 1 hora antes de la sesión");
+        }
+
+        compra.setEstado("CANCELADA");
+        return compraMapper.convertirADTO(compraRepository.save(compra));
+    }
 }
