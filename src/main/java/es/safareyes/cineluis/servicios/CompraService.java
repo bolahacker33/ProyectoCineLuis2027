@@ -35,7 +35,6 @@ public class CompraService {
     private final ISesionRepository sesionRepository;
     private final IUsuarioRepository usuarioRepository;
 
-    // ENDPOINT 12: detalle por código (un cliente solo puede ver las suyas)
     @Transactional(readOnly = true)
     public CompraDTO obtenerPorCodigo(String codigo, String username, boolean soloPropias) {
         Compra compra = compraRepository.findByCodCompra(codigo.toUpperCase())
@@ -47,7 +46,6 @@ public class CompraService {
         return convertirDTO(compra);
     }
 
-    // ENDPOINT 13: listado paginado (un cliente solo ve las suyas)
     @Transactional(readOnly = true)
     public Page<CompraDTO> listar(int pagina, int tamanio, String username, boolean soloPropias) {
         Pageable pageable = PageRequest.of(

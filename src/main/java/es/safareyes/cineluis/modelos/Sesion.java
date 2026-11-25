@@ -48,7 +48,6 @@ public class Sesion {
     public Sala getSala() { return sala; }
     public void setSala(Sala sala) { this.sala = sala; }
 
-    // RN-07: 30 % de descuento si la sesión es en miércoles
     public BigDecimal calcularPrecioUnitario() {
         if (fechaHoraInicio != null && fechaHoraInicio.getDayOfWeek() == DayOfWeek.WEDNESDAY) {
             return precioBase.multiply(new BigDecimal("0.70")).setScale(2, RoundingMode.HALF_UP);
