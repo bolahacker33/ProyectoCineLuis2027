@@ -31,7 +31,6 @@ public class InformeController {
     private final SesionRepository sesionRepository;
     private final CompraRepository compraRepository;
 
-    // ENDPOINT 15: entradas vendidas y recaudación total (solo CONFIRMADA, RN-10)
     @GetMapping("/peliculas/{id}/recaudacion")
     @PreAuthorize("hasRole('ADMIN')")
     public RecaudacionDTO recaudacion(@PathVariable Integer id) {
@@ -49,7 +48,6 @@ public class InformeController {
         );
     }
 
-    // ENDPOINT 16: porcentaje de ocupación por sesión (solo CONFIRMADA, RN-10)
     @GetMapping("/informes/ocupacion")
     @PreAuthorize("hasRole('ADMIN')")
     public List<OcupacionDTO> ocupacion(

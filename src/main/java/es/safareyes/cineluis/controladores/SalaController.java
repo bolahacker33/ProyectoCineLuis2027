@@ -20,7 +20,6 @@ public class SalaController {
         this.salaRepository = salaRepository;
     }
 
-    // ENDPOINT 7: salas y capacidades (ADMIN, TAQUILLA)
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','TAQUILLA')")
     public List<Sala> listar() {
