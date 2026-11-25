@@ -1,7 +1,6 @@
 package es.safareyes.cineluis.servicios;
 
 import es.safareyes.cineluis.excepciones.ReglaNegocioException;
-import es.safareyes.cineluis.excepciones.ElementoDuplicado;
 import es.safareyes.cineluis.excepciones.ElementoNoEncontrado;
 import es.safareyes.cineluis.dtos.CompraDTO;
 import es.safareyes.cineluis.dtos.CompraRequest;
@@ -82,7 +81,7 @@ public class CompraService {
         long vendidas = compraRepository.contarEntradasVendidas(sesion.getId());
         long libres = sesion.getSala().getCapacidad() - vendidas;
         if (request.getNumEntradas() > libres) {
-            throw new ElementoDuplicado("No hay suficientes asientos libres. Quedan " + Math.max(libres, 0));
+            throw new ReglaNegocioException("No hay suficientes asientos libres. Quedan " + Math.max(libres, 0));
         }
 
         Usuario usuario = usuarioRepository.findByUsername(username)
