@@ -67,13 +67,6 @@ public class CompraService implements ICompraService {
     @Transactional
     @Override
     public CompraDTO crear(CrearCompraDTO request, String username) {
-        if (request.sesionId() == null || request.numEntradas() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sesionId y numEntradas son obligatorios");
-        }
-        if (request.numEntradas() < 1 || request.numEntradas() > 10) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Se pueden comprar entre 1 y 10 entradas");
-        }
-
         Sesion sesion = sesionRepository.buscarParaCompra(request.sesionId())
                 .orElseThrow(() -> new ElementoNoEncontrado("Sesión no encontrada"));
 

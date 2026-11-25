@@ -35,15 +35,6 @@ public class SesionService implements ISesionService {
     private SesionMapper sesionMapper;
 
     private Sesion guardar(CrearSesionDTO request) {
-        if (request.peliculaId() == null || request.salaId() == null
-                || request.fechaHoraInicio() == null || request.precioBase() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "peliculaId, salaId, fechaHoraInicio y precioBase son obligatorios");
-        }
-        if (request.precioBase().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio base debe ser mayor que 0");
-        }
-
         Pelicula pelicula = peliculaRepository.findById(request.peliculaId())
                 .orElseThrow(() -> new ElementoNoEncontrado("Película no encontrada"));
         Sala sala = salaRepository.findById(request.salaId())

@@ -26,9 +26,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class PeliculaService implements IPeliculaService {
 
-    private static final List<String> CLASIFICACIONES =
-            List.of("TP", "MAYORES_7", "MAYORES_12", "MAYORES_16", "MAYORES_18");
-
     private IPeliculaRepository repository;
     private IPeliculaGeneroRepository peliculaGeneroRepository;
     private IGeneroRepository generoRepository;
@@ -70,7 +67,6 @@ public class PeliculaService implements IPeliculaService {
     @Transactional
     @Override
     public PeliculaDTO crear(CrearPeliculaDTO request) {
-        validar(request);
         List<Genero> generos = buscarGeneros(request.generos());
 
         Pelicula pelicula = new Pelicula();
@@ -89,22 +85,6 @@ public class PeliculaService implements IPeliculaService {
         }
 
         return peliculaMapper.convertirADTO(guardada);
-    }
-
-    private void validar(CrearPeliculaDTO request) {
-        if (request.titulo() == null || request.titulo().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El título es obligatorio");
-        }
-        if (request.anio() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El año es obligatorio");
-        }
-        if (request.duracion() == null || request.duracion() < 1 || request.duracion() > 300) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La duración debe estar entre 1 y 300 minutos");
-        }
-        if (request.clasificacion() == null || !CLASIFICACIONES.contains(request.clasificacion())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Clasificación no válida. Valores: " + CLASIFICACIONES);
-        }
     }
 
     private List<Genero> buscarGeneros(List<String> nombres) {
