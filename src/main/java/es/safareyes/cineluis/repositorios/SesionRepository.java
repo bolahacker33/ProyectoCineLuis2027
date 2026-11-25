@@ -1,7 +1,9 @@
 package es.safareyes.cineluis.repositorios;
 
 import es.safareyes.cineluis.modelos.Sesion;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SesionRepository extends JpaRepository<Sesion, Integer> {
@@ -36,6 +39,10 @@ public interface SesionRepository extends JpaRepository<Sesion, Integer> {
     Long contarSolapadas(@Param("salaId") Integer salaId,
                          @Param("inicio") LocalDateTime inicio,
                          @Param("fin") LocalDateTime fin);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT s FROM Sesion s JOIN FETCH s.pelicula JOIN FETCH s.sala WHERE s.id = :id")
+    Optional<Sesion> buscarParaCompra(@Param("id") Integer id);
 
     default List<Sesion> buscarSesiones(LocalDate fecha, Integer peliculaId) {
         LocalDateTime desde = fecha == null ? LocalDateTime.of(1900, 1, 1, 0, 0) : fecha.atStartOfDay();
