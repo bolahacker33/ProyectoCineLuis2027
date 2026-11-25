@@ -27,6 +27,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SesionService implements ISesionService {
 
+    private static final int MINUTOS_LIMPIEZA = 20;
+
     private ISesionRepository sesionRepository;
     private IPeliculaRepository peliculaRepository;
     private ISalaRepository salaRepository;
@@ -52,9 +54,14 @@ public class SesionService implements ISesionService {
         }
 
         LocalDateTime inicio = request.fechaHoraInicio();
+
+        if (!inicio.isAfter(LocalDateTime.now())) {
+            throw new ReglaNegocioException("La sesión debe tener una fecha futura");
+        }
+
         LocalDateTime fin = inicio.plusMinutes(pelicula.getDuracion());
 
-        if (sesionRepository.contarSolapadas(sala.getId(), inicio, fin) > 0) {
+        if (sesionRepository.contarSolapadas(sala.getId(), inicio.minusMinutes(MINUTOS_LIMPIEZA), fin.plusMinutes(MINUTOS_LIMPIEZA)) > 0) {
             throw new ElementoDuplicado("La sala ya tiene una sesión en ese horario");
         }
 
