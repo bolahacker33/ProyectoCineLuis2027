@@ -5,5 +5,5 @@ import es.safareyes.cineluis.modelos.Sesion;
 
 public interface ISesionService {
 
-    public Sesion crear(SesionRequest request);
+    Sesion crear(SesionRequest request);
 }

@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 
 public interface ICompraService {
 
-    public CompraDTO obtenerPorCodigo(String codigo, String username, boolean soloPropias);
+    CompraDTO obtenerPorCodigo(String codigo, String username, boolean soloPropias);
 
-    public Page<CompraDTO> listar(int pagina, int tamanio, String username, boolean soloPropias);
+    Page<CompraDTO> listar(int pagina, int tamanio, String username, boolean soloPropias);
 
-    public CompraDTO crear(CompraRequest request, String username);
+    CompraDTO crear(CompraRequest request, String username);
 }
