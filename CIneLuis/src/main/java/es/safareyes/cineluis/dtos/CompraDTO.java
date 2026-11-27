@@ -1,0 +1,26 @@
+package es.safareyes.cineluis.dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CompraDTO {
+
+    private String codigo;
+    private Integer sesionId;
+    private String pelicula;
+    private Integer sala;
+    private LocalDateTime fechaHoraInicio;
+    private Integer numEntradas;
+    private BigDecimal precioTotal;
+    private String estado;
+    private Boolean parkingUsado;
+    private LocalDateTime fechaCompra;
+    private String username;
+}

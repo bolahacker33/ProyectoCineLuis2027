@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+  <span class="logo">🎬 Cine<span>Town</span></span>
+  @if (auth.usuario(); as usuario) {
+    @for (opcion of usuario.opcionesMenu(); track opcion.ruta) {
+      <a mat-button [routerLink]="opcion.ruta" routerLinkActive="activo">{{ opcion.texto }}</a>
+    }
+    <span class="espacio"></span>
+    <span class="sesion">{{ usuario.username }} · {{ usuario.rol }}</span>
+    <button mat-button (click)="salir()">Salir</button>
+  } @else {
+    <span class="espacio"></span>
+    <a mat-button routerLink="/login">Entrar</a>
+    <a mat-button routerLink="/registro">Registro</a>
+  }
+</mat-toolbar>
+<main>
+  <div class="contenedor"><router-outlet /></div>
+</main>

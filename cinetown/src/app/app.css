@@ -1,0 +1,37 @@
+mat-toolbar {
+  background: linear-gradient(90deg, #14162b, #2b2f5e);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 4px;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  margin-right: 24px;
+}
+
+.logo span {
+  color: #e8506a;
+}
+
+.espacio {
+  flex: 1 1 auto;
+}
+
+.activo {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.sesion {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-right: 8px;
+}
+
+main {
+  padding: 24px 16px;
+}

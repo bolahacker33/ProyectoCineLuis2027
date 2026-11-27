@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* ===== Diseño general CineTown ===== */
+:root {
+  --ct-fondo: #f4f5fb;
+  --ct-oscuro: #14162b;
+  --ct-acento: #e8506a;
+}
+
+body {
+  margin: 0;
+  background: var(--ct-fondo);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+}
